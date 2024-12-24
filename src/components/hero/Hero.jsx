@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSearch, FaShoppingCart } from 'react-icons/fa';
+import { FaSearch, FaShoppingCart, FaStar } from 'react-icons/fa';
 import threeImg from "../../assets/uklt.jpg";
 import twoImg from "../../assets/poyy.jpg";
 import immImg from "../../assets/imm.jpg";
@@ -13,12 +13,12 @@ const Hero = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const products = [
-    { id: 1, name: 'Chocolate Muffin', description: 'Rich and moist chocolate muffins made with premium cocoa.', price: 'Rp 50,000', image: threeImg },
-    { id: 2, name: 'Croissant', description: 'Flaky, buttery croissants baked fresh every morning.', price: 'Rp 40,000', image: twoImg },
-    { id: 3, name: 'Imm Cake', description: 'Delicious and fluffy imm cake with a light vanilla flavor.', price: 'Rp 60,000', image: immImg },
-    { id: 4, name: 'Fun Cake', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 30,000', image: roti1Img },
-    { id: 5, name: 'Choco Cess', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 65,000', image: roti2Img },
-    { id: 6, name: 'Strawberry Cake', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 50,000', image: roti3Img },
+    { id: 1, name: 'Chocolate Muffin', description: 'Rich and moist chocolate muffins made with premium cocoa.', price: 'Rp 50,000', image: threeImg, rating: 5 },
+    { id: 2, name: 'Croissant', description: 'Flaky, buttery croissants baked fresh every morning.', price: 'Rp 40,000', image: twoImg, rating: 4 },
+    { id: 3, name: 'Imm Cake', description: 'Delicious and fluffy imm cake with a light vanilla flavor.', price: 'Rp 60,000', image: immImg, rating: 3 },
+    { id: 4, name: 'Fun Cake', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 30,000', image: roti1Img, rating: 4 },
+    { id: 5, name: 'Choco Cess', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 65,000', image: roti2Img, rating: 5 },
+    { id: 6, name: 'Strawberry Cake', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 50,000', image: roti3Img, rating: 4 },
   ];
 
   const handleSearch = (event) => {
@@ -40,6 +40,19 @@ const Hero = () => {
 
   const handleOrder = (product) => {
     alert(`Anda memesan produk: ${product.name}`);
+  };
+
+  const renderStars = (rating) => {
+    return (
+      <div className="flex justify-center items-center gap-1 mt-2">
+        {Array.from({ length: rating }, (_, index) => (
+          <FaStar
+            key={index}
+            className="text-yellow-400 text-2xl hover:scale-110 transition-transform duration-200"
+          />
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -70,7 +83,8 @@ const Hero = () => {
           <div className="bg-white shadow-lg rounded-2xl p-8 max-w-lg mx-auto">
             <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-64 object-cover rounded-xl mb-4" />
             <h3 className="text-2xl font-serif font-semibold text-gray-800">{selectedProduct.name}</h3>
-            <p className="text-sm text-gray-500 mt-2">{selectedProduct.description}</p>
+            {renderStars(selectedProduct.rating)}
+            <p className="text-sm text-gray-500 mt-4">{selectedProduct.description}</p>
             <p className="text-lg font-bold text-orange-600 mt-4">{selectedProduct.price}</p>
             <div className="flex justify-between mt-6">
               <button
@@ -93,9 +107,10 @@ const Hero = () => {
               {(searchTerm === '' ? products : filteredProducts).map((product) => (
                 <div key={product.id} className="bg-white shadow-xl rounded-xl overflow-hidden hover:scale-105 transform transition-all duration-300">
                   <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-xl" />
-                  <div className="p-6">
+                  <div className="p-6 text-center">
                     <h3 className="text-lg font-serif font-semibold text-gray-800">{product.name}</h3>
-                    <p className="text-sm text-gray-500 mt-2">{product.description}</p>
+                    {renderStars(product.rating)}
+                    <p className="text-sm text-gray-500 mt-4">{product.description}</p>
                     <p className="text-lg font-bold text-orange-600 mt-4">{product.price}</p>
                     <div className="mt-4 flex justify-between gap-4">
                       <button
