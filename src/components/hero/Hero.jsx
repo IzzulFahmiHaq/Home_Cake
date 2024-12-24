@@ -1,63 +1,115 @@
-import React from 'react';
-import dinoImg from "../../assets/imagee.jpg";
-import secondImg from "../../assets/imgg.jpg";
-import threeImg from "../../assets/imgge.jpg";
-import twoImg from "../../assets/imgrot.jpg";
+import React, { useState } from 'react';
+import { FaSearch, FaShoppingCart } from 'react-icons/fa';
+import threeImg from "../../assets/uklt.jpg";
+import twoImg from "../../assets/poyy.jpg";
+import immImg from "../../assets/imm.jpg";
+import roti1Img from "../../assets/roti1.jpg";
+import roti2Img from "../../assets/kuee.jpg";
+import roti3Img from "../../assets/gema.jpg";
 
 const Hero = () => {
+  // State untuk pencarian produk
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const products = [
+    { id: 1, name: 'Chocolate Muffin', description: 'Rich and moist chocolate muffins made with premium cocoa.', price: 'Rp 50,000', image: threeImg },
+    { id: 2, name: 'Croissant', description: 'Flaky, buttery croissants baked fresh every morning.', price: 'Rp 40,000', image: twoImg },
+    { id: 3, name: 'Imm Cake', description: 'Delicious and fluffy imm cake with a light vanilla flavor.', price: 'Rp 60,000', image: immImg },
+    { id: 4, name: 'Fun Cake', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 30,000', image: roti1Img },
+    { id: 5, name: 'Choco Cess', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 65,000', image: roti2Img },
+    { id: 6, name: 'Strawberry Cake', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 50,000', image: roti3Img },
+  ];
+
+  // Fungsi untuk menangani pencarian
+  const handleSearch = (event) => {
+    const keyword = event.target.value;
+    setSearchTerm(keyword);
+    const filtered = products.filter((product) =>
+      product.name.toLowerCase().includes(keyword.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  };
+
   return (
-    <main className="w-full bg-gradient-to-r from-orange-400 to-yellow-500 dark:bg-gradient-to-r dark:from-orange-600 dark:to-yellow-600 dark:text-white">
-      <div className="container grid grid-cols-1 sm:grid-cols-2 gap-8 py-12 sm:py-20">
-        <div className="text-center sm:text-left flex flex-col justify-center">
-          <p className="text-3xl font-semibold text-white">Welcome to Sweet Bakes Bakery!</p>
-          <p className="text-5xl font-extrabold text-white mt-2">Freshly Baked Happiness</p>
-          <p className="text-xl text-gray-200 my-4 max-w-lg mx-auto sm:mx-0">
-            Discover our delicious range of cakes, pastries, and artisan bread crafted with love.
-          </p>
-          <div className="flex flex-col items-center sm:items-start gap-4">
-            <a
-              href="/shop"
-              className="inline-block px-8 py-4 text-white bg-yellow-600 rounded-full shadow-lg hover:bg-yellow-700 hover:scale-105 transition-all duration-300 transform"
-            >
-              Explore Our Menu
-            </a>
-            <a
-              href="/contact"
-              className="inline-block px-8 py-4 text-white bg-yellow-600 rounded-full shadow-lg hover:bg-yellow-700 hover:scale-105 transition-all duration-300 transform"
-            >
-              Visit Us
-            </a>
-          </div>
+    <main className="bg-gradient-to-b from-gray-100 to-gray-300 py-16">
+      <div className="container mx-auto text-center">
+        <h1 className="text-6xl font-serif font-bold text-orange-700 mb-6">Sweet Bakes Bakery</h1>
+        <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+          Indulge in our freshly baked treats, from pastries to cakes, all made with love.
+        </p>
+
+        {/* Input Pencarian */}
+        <div className="flex justify-center items-center gap-6 mb-6">
+          <input
+            type="text"
+            placeholder="Cari roti yang Anda inginkan..."
+            className="py-3 px-6 text-lg rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 w-80"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <button
+            onClick={() => handleSearch({ target: { value: searchTerm } })}
+            className="inline-flex items-center py-3 px-8 text-lg font-semibold text-white bg-orange-600 rounded-full hover:bg-orange-700 transition duration-300 transform hover:scale-105"
+          >
+            <FaSearch className="text-xl mr-2" /> Cari
+          </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-8">
-          <div className="flex justify-center items-center">
-            <img
-              src={dinoImg}
-              alt="Fresh Bread"
-              className="w-full max-w-lg rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300"
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <img
-              src={secondImg}
-              alt="Delicious Cakes"
-              className="w-full max-w-lg rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300"
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <img
-              src={threeImg}
-              alt="Delicious Cakes"
-              className="w-full max-w-lg rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300"
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <img
-              src={twoImg}
-              alt="Delicious Cakes"
-              className="w-full max-w-lg rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300"
-            />
+        {/* Tombol Order Sekarang */}
+        <div className="flex justify-center mb-6">
+          <a
+            href="/order-now"
+            className="inline-flex items-center py-2 px-6 text-lg font-semibold text-white bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-lg hover:bg-gradient-to-l from-yellow-400 to-yellow-500 transition duration-300 transform hover:scale-105"
+          >
+            <FaShoppingCart className="text-lg mr-2" /> Order Sekarang
+          </a>
+        </div>
+
+        {/* Menampilkan produk berdasarkan pencarian */}
+        <div className="py-16 bg-white shadow-lg rounded-2xl">
+          <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {searchTerm === '' ? (
+              // Jika pencarian kosong, tampilkan semua produk
+              products.map((product) => (
+                <div key={product.id} className="bg-white shadow-xl rounded-xl overflow-hidden hover:scale-105 transform transition-all duration-300">
+                  <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-xl" />
+                  <div className="p-6">
+                    <h3 className="text-lg font-serif font-semibold text-gray-800">{product.name}</h3>
+                    <p className="text-sm text-gray-500 mt-2">{product.description}</p>
+                    <p className="text-lg font-bold text-orange-600 mt-4">{product.price}</p>
+                    <div className="mt-4">
+                      <a
+                        href={`/product/${product.id}`}
+                        className="text-center block py-2 px-4 bg-orange-700 text-white rounded-full hover:bg-orange-800 transition duration-300"
+                      >
+                        Lihat Detail
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // Tampilkan produk yang sesuai dengan pencarian
+              filteredProducts.map((product) => (
+                <div key={product.id} className="bg-white shadow-xl rounded-xl overflow-hidden hover:scale-105 transform transition-all duration-300">
+                  <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-xl" />
+                  <div className="p-6">
+                    <h3 className="text-lg font-serif font-semibold text-gray-800">{product.name}</h3>
+                    <p className="text-sm text-gray-500 mt-2">{product.description}</p>
+                    <p className="text-lg font-bold text-orange-600 mt-4">{product.price}</p>
+                    <div className="mt-4">
+                      <a
+                        href={`/product/${product.id}`}
+                        className="text-center block py-2 px-4 bg-orange-700 text-white rounded-full hover:bg-orange-800 transition duration-300"
+                      >
+                        Lihat Detail
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
