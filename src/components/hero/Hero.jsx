@@ -8,9 +8,9 @@ import roti2Img from "../../assets/kuee.jpg";
 import roti3Img from "../../assets/gema.jpg";
 
 const Hero = () => {
-  // State untuk pencarian produk
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const products = [
     { id: 1, name: 'Chocolate Muffin', description: 'Rich and moist chocolate muffins made with premium cocoa.', price: 'Rp 50,000', image: threeImg },
@@ -21,7 +21,6 @@ const Hero = () => {
     { id: 6, name: 'Strawberry Cake', description: 'Soft and warm roti, perfect for any meal.', price: 'Rp 50,000', image: roti3Img },
   ];
 
-  // Fungsi untuk menangani pencarian
   const handleSearch = (event) => {
     const keyword = event.target.value;
     setSearchTerm(keyword);
@@ -29,6 +28,18 @@ const Hero = () => {
       product.name.toLowerCase().includes(keyword.toLowerCase())
     );
     setFilteredProducts(filtered);
+  };
+
+  const handleViewDetails = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleBackToList = () => {
+    setSelectedProduct(null);
+  };
+
+  const handleOrder = (product) => {
+    alert(`Anda memesan produk: ${product.name}`);
   };
 
   return (
@@ -39,79 +50,73 @@ const Hero = () => {
           Indulge in our freshly baked treats, from pastries to cakes, all made with love.
         </p>
 
-        {/* Input Pencarian */}
         <div className="flex justify-center items-center gap-6 mb-6">
           <input
             type="text"
             placeholder="Cari roti yang Anda inginkan..."
-            className="py-3 px-6 text-lg rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 w-80"
+            className="py-3 px-6 text-lg rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 w-80 shadow-md"
             value={searchTerm}
             onChange={handleSearch}
           />
           <button
             onClick={() => handleSearch({ target: { value: searchTerm } })}
-            className="inline-flex items-center py-3 px-8 text-lg font-semibold text-white bg-orange-600 rounded-full hover:bg-orange-700 transition duration-300 transform hover:scale-105"
+            className="inline-flex items-center py-3 px-8 text-lg font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-full hover:shadow-lg transition duration-300 transform hover:scale-105"
           >
             <FaSearch className="text-xl mr-2" /> Cari
           </button>
         </div>
 
-        {/* Tombol Order Sekarang */}
-        <div className="flex justify-center mb-6">
-          <a
-            href="/order-now"
-            className="inline-flex items-center py-2 px-6 text-lg font-semibold text-white bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-lg hover:bg-gradient-to-l from-yellow-400 to-yellow-500 transition duration-300 transform hover:scale-105"
-          >
-            <FaShoppingCart className="text-lg mr-2" /> Order Sekarang
-          </a>
-        </div>
-
-        {/* Menampilkan produk berdasarkan pencarian */}
-        <div className="py-16 bg-white shadow-lg rounded-2xl">
-          <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {searchTerm === '' ? (
-              // Jika pencarian kosong, tampilkan semua produk
-              products.map((product) => (
-                <div key={product.id} className="bg-white shadow-xl rounded-xl overflow-hidden hover:scale-105 transform transition-all duration-300">
-                  <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-xl" />
-                  <div className="p-6">
-                    <h3 className="text-lg font-serif font-semibold text-gray-800">{product.name}</h3>
-                    <p className="text-sm text-gray-500 mt-2">{product.description}</p>
-                    <p className="text-lg font-bold text-orange-600 mt-4">{product.price}</p>
-                    <div className="mt-4">
-                      <a
-                        href={`/product/${product.id}`}
-                        className="text-center block py-2 px-4 bg-orange-700 text-white rounded-full hover:bg-orange-800 transition duration-300"
-                      >
-                        Lihat Detail
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              // Tampilkan produk yang sesuai dengan pencarian
-              filteredProducts.map((product) => (
-                <div key={product.id} className="bg-white shadow-xl rounded-xl overflow-hidden hover:scale-105 transform transition-all duration-300">
-                  <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-xl" />
-                  <div className="p-6">
-                    <h3 className="text-lg font-serif font-semibold text-gray-800">{product.name}</h3>
-                    <p className="text-sm text-gray-500 mt-2">{product.description}</p>
-                    <p className="text-lg font-bold text-orange-600 mt-4">{product.price}</p>
-                    <div className="mt-4">
-                      <a
-                        href={`/product/${product.id}`}
-                        className="text-center block py-2 px-4 bg-orange-700 text-white rounded-full hover:bg-orange-800 transition duration-300"
-                      >
-                        Lihat Detail
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
+        {selectedProduct ? (
+          <div className="bg-white shadow-lg rounded-2xl p-8 max-w-lg mx-auto">
+            <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-64 object-cover rounded-xl mb-4" />
+            <h3 className="text-2xl font-serif font-semibold text-gray-800">{selectedProduct.name}</h3>
+            <p className="text-sm text-gray-500 mt-2">{selectedProduct.description}</p>
+            <p className="text-lg font-bold text-orange-600 mt-4">{selectedProduct.price}</p>
+            <div className="flex justify-between mt-6">
+              <button
+                onClick={handleBackToList}
+                className="py-2 px-4 bg-gray-300 text-gray-700 rounded-full hover:bg-gray-400 hover:shadow-md transition duration-300"
+              >
+                Kembali
+              </button>
+              <button
+                onClick={() => handleOrder(selectedProduct)}
+                className="py-2 px-6 bg-gradient-to-r from-green-500 to-green-400 text-white rounded-full hover:shadow-lg hover:scale-105 transition duration-300"
+              >
+                Order
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="py-16 bg-white shadow-lg rounded-2xl">
+            <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {(searchTerm === '' ? products : filteredProducts).map((product) => (
+                <div key={product.id} className="bg-white shadow-xl rounded-xl overflow-hidden hover:scale-105 transform transition-all duration-300">
+                  <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-xl" />
+                  <div className="p-6">
+                    <h3 className="text-lg font-serif font-semibold text-gray-800">{product.name}</h3>
+                    <p className="text-sm text-gray-500 mt-2">{product.description}</p>
+                    <p className="text-lg font-bold text-orange-600 mt-4">{product.price}</p>
+                    <div className="mt-4 flex justify-between gap-4">
+                      <button
+                        onClick={() => handleViewDetails(product)}
+                        className="py-2 px-4 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-full hover:shadow-lg transition duration-300 w-full"
+                      >
+                        Lihat Detail
+                      </button>
+                      <button
+                        onClick={() => handleOrder(product)}
+                        className="py-2 px-4 bg-gradient-to-r from-green-500 to-green-400 text-white rounded-full hover:shadow-lg transition duration-300 w-full"
+                      >
+                        Order
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
