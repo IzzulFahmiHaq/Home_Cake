@@ -8,56 +8,57 @@ const Dashboard = () => {
   const [dataList, setDataList] = useState([]);
   const navigate = useNavigate();
 
-  // Fetching data produk
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/products"); // Pastikan URL API Anda benar
+      const response = await axios.get("http://localhost:8080/api/data/all"); // Ganti dengan endpoint yang sesuai
       setDataList(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  // Fungsi untuk menghapus produk
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/products/${id}`);
+      await axios.delete(`http://localhost:8080/api/data/delete/${id}`); // Ganti dengan endpoint yang sesuai
       setDataList(dataList.filter((data) => data.id !== id));
     } catch (error) {
       console.error("Error deleting data:", error);
     }
   };
 
-  // Fungsi untuk mengedit produk
   const handleEdit = (id) => {
-    navigate(`/edit/${id}`);
+    navigate(`/editdata/${id}`);
   };
 
-  // Fungsi untuk menambahkan produk
   const handleAdd = () => {
-    navigate("/add-product");
+    navigate("/tambahdata");
   };
 
   useEffect(() => {
     fetchData();
-  }, []); // Menambahkan efek kosong untuk mengambil data produk
+  }, []);
 
   return (
     <div style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}>
       <div style={{ width: "80%", textAlign: "center" }}>
-        <h1 style={{ marginBottom: "20px", color: "#FF6347" }}>Produk Roti Kami</h1>
+        <h1 style={{ marginBottom: "20px", color: "#2E8B57" }}>Data Produk</h1>
         <button
           onClick={handleAdd}
           style={{
             padding: "10px 20px",
             fontSize: "16px",
             marginBottom: "20px",
-            backgroundColor: "#FFA500",
+            backgroundImage: "linear-gradient(45deg, #4CAF50, #2E8B57)",
             color: "white",
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            transition: "transform 0.2s, background 0.2s",
           }}
+          onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+          onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
         >
           <FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} /> Tambah Produk
         </button>
@@ -72,7 +73,7 @@ const Dashboard = () => {
           }}
         >
           <thead>
-            <tr style={{ backgroundColor: "#FF6347", color: "white" }}>
+            <tr style={{ backgroundColor: "#2E8B57", color: "white" }}>
               <th>ID</th>
               <th>Nama Produk</th>
               <th>Deskripsi</th>
@@ -81,37 +82,43 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {dataList.map((product) => (
-              <tr key={product.id} style={{ borderBottom: "1px solid #ccc" }}>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>{product.description}</td>
-                <td>{product.price}</td>
+            {dataList.map((data) => (
+              <tr key={data.id} style={{ borderBottom: "1px solid #ccc" }}>
+                <td>{data.id}</td>
+                <td>{data.name}</td>
+                <td>{data.description}</td>
+                <td>{data.price}</td>
                 <td>
                   <button
-                    onClick={() => handleEdit(product.id)}
+                    onClick={() => handleEdit(data.id)}
                     style={{
                       marginRight: "10px",
-                      backgroundColor: "#FFA500",
+                      backgroundImage: "linear-gradient(45deg, #FFA500, #FF8C00)",
                       color: "white",
                       border: "none",
                       padding: "5px 10px",
                       borderRadius: "5px",
                       cursor: "pointer",
+                      transition: "transform 0.2s, background 0.2s",
                     }}
+                    onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
+                    onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
                   >
                     <FontAwesomeIcon icon={faEdit} /> Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(product.id)}
+                    onClick={() => handleDelete(data.id)}
                     style={{
-                      backgroundColor: "#FF6347",
+                      backgroundImage: "linear-gradient(45deg, #F44336, #D32F2F)",
                       color: "white",
                       border: "none",
                       padding: "5px 10px",
                       borderRadius: "5px",
                       cursor: "pointer",
+                      transition: "transform 0.2s, background 0.2s",
                     }}
+                    onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
+                    onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
                   >
                     <FontAwesomeIcon icon={faTrash} /> Hapus
                   </button>
